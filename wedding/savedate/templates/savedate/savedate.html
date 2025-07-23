@@ -1,0 +1,341 @@
+{% extends 'savedate/base.html' %}
+{% load static %}
+{% block title %}Jess & Tim | Save the Date! | 11/1/25{% endblock %}
+{% block extra_css %}
+<style>
+    body {
+        background-color: #61672f;
+    }
+    .background-img {
+        background-image:url("{% static 'bg-green.png' %}");; 
+        height: 100vh;
+        width:100vw;
+        position: relative;
+        background-size:cover;
+        z-index:1;
+    }
+    .background-lines {
+        height: 100vh;
+        width:100vw;
+        position: absolute;
+        z-index:1;
+    }
+    .card-holder {
+        position: relative;
+        aspect-ratio: 1733 / 2545;
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 6px;
+    }
+    .rsvp-details {
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        background-color: rgb(175, 62, 21);
+        padding: 0.5rem;
+
+    }
+    .rsvp-button {
+        background-color:rgb(175, 62, 21);
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        radius: 8px;
+        min-height: 5rem;
+        box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rsvp-button:hover {
+        transform: scale(1.015);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .invite-lyr {
+        position: absolute;
+        left: 0;
+        top:0;
+        margin: 0px;
+        margin-color: rgba(0,0,0,0);
+        transition: transform 0.1s ease;
+    }
+    .invite-lyr:hover {
+        transform: scaleX(1.01) scaleY(0.99) perspective(17px) translateY(2px);
+    }
+    .tnspt {
+        background: transparent;
+    }
+    .bg-white {
+        background-color: #FFFFFF;
+        position: absolute;
+        
+    }
+
+    .down-arrow {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        transition: transform 0.2s ease;
+    }
+    .down-arrow:hover {
+        transform: translateY(5px);
+    }
+    /* Styles for the new photo gallery section */
+    #photo-gallery {
+        padding: 6rem 2rem 4rem; /* Added more top padding */
+        background-color: #fdfaf7; /* A soft background color */
+    }
+    .gallery-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    .gallery-container a {
+        display: block;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gallery-container a:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .gallery-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    @font-face {
+        font-family: "handcaps";
+        src:
+            url("{% static 'fonts/Handcaps.otf' %}") format('opentype');
+    }
+    @font-face {
+        font-family: "press-style-serifs";
+        src:
+            url("{% static 'fonts/PressStyleSerif.ttf'%}") format('truetype');
+    }
+    .press {
+        font-family: "press-style-serifs", serif;
+    }
+    .hand {
+        font-family: "Courier New", sans-serif;
+    }
+
+    .rsvp-light-txt {
+        color: rgb(233, 207, 175);
+    }
+
+    .rsvp-dark-txt {
+        text-color: rgb(0,0,0)
+    }
+    .h1 {
+        height: 2rem;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'node_modules/photoswipe/dist/photoswipe.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="background-img">
+    <div class="container" style="width: 100% margin:0;">
+        <div class="row gx-4">
+            <div class="col-md-6 p-3" style="width: min(calc((100vw * 0.5) - 2rem), 500px) !important;">
+                <div class="card-holder">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'bg.png' %}" style="z-index: 2;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-3.png' %}" style="z-index: 3;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-4.png' %}" style="z-index: 4;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-5.png' %}" style="z-index: 5;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-6.png' %}" style="z-index: 6;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-7.png' %}" style="z-index: 7;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-8.png' %}" style="z-index: 8;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-9.png' %}" style="z-index: 9;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-10.png' %}" style="z-index: 10;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-11.png' %}" style="z-index: 11;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-12.png' %}" style="z-index: 12;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-13.png' %}" style="z-index: 13;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-14.png' %}" style="z-index: 14;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-15.png' %}" style="z-index: 15;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-16.png' %}" style="z-index: 16;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-17.png' %}" style="z-index: 17;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-18.png' %}" style="z-index: 18;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-19.png' %}" style="z-index: 19;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-20.png' %}" style="z-index: 20;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-21.png' %}" style="z-index: 21;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-22.png' %}" style="z-index: 22;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-23.png' %}" style="z-index: 23;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-24.png' %}" style="z-index: 24;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-25.png' %}" style="z-index: 25;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-26.png' %}" style="z-index: 26;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-27.png' %}" style="z-index: 27;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-28.png' %}" style="z-index: 28;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-29.png' %}" style="z-index: 29;">
+                    <img class='img-fluid invite-lyr tnspt' src="{% static 'lyr-32.png' %}" style="z-index: 32;">
+                </div>
+            </div>
+                <div class="col">
+                    <div class="row m-1 g-3 text-center align-items-center">
+                        <div class="col-12 px-0" style="margin-top: 0.75rem;">
+                            <div class="rsvp-details">
+                                <p class="press rsvp-light-txt" style="font-size: 8rem; margin: 0px;">JESS & TIM</h1>
+                                <h2 class="ibm-plex-mono-regular rsvp-light-txt" style="font-size: 1.5rem; margin-top: -3rem;">are getting married!</h2>
+                                <h1 class="press rsvp-light-txt" style="font-size: 3.5rem; margin: 0px;"> ON NOVEMBER 1<sup>st</sup>, 2025</h1>
+                                <h4 class="ibm-plex-mono-regular rsvp-light-txt" style="margin: 0px; margin-bottom: 3rem;"> at Brown County State Park<br>near Nashville, Indiana</h2>
+                            </div>
+                        </div>
+                            <div class="col-lg-12" style="position: relative;">
+                                <div class="rsvp-button" style="background-color: #e75e2c; align-items-center">
+                                    <a style="width:100%; height: 100%; position:absolute; z-index:5; left:0; top:0;" href="{% url 'savedate:notion' 'rsvp' %}"></a>
+                                    <h1 class="ibm-plex-mono-regular rsvp-light-txt" style="font-size: 2rem;">RSVP Here!</h1>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" style="position: relative;">
+                                <div class="rsvp-button">
+                                    <a style="width:100%; height: 100%; position:absolute; z-index:5; left:0; top:0;" href="{% url 'savedate:notion' 'details' %}"></a>
+                                    <div>
+                                        <h1 class="ibm-plex-mono-regular rsvp-light-txt" style="font-size: 1.5rem;">Details</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" style="position: relative;">
+                                <div class="rsvp-button">
+                                    <a style="width:100%; height: 100%; position:absolute; z-index:5; left:0; top:0;" href="{% url 'savedate:notion' 'travel' %}"></a>
+                                    <h1 class="ibm-plex-mono-regular rsvp-light-txt" style="font-size: 1.5rem">Travel</h1>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="position: relative;">
+                                <div class="rsvp-button">
+                                    <a style="width:100%; height: 100%; position:absolute; z-index:5; left:0; top:0;" href="{% url 'savedate:registry' %}"></a>
+                                    <h1 class="ibm-plex-mono-regular rsvp-light-txt" style="font-size: 1.5rem;">Registry</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col justify-content-center">
+                        <div class="down-arrow" id="scroll-down-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <section id="photo-gallery" style="background-color: #61672f;">
+                <div class="container mx-auto">
+                    <h2 class="text-4xl font-bold text-center mb-12 press rsvp-light-txt" style="font-size:4rem;">Us</h2>
+                    <!-- This is the container for the lightgallery -->
+                    <div id="lightgallery" class="gallery-container">
+                        <!-- Each 'a' tag is a gallery item. The 'href' is the full image, the 'img src' is the thumbnail. -->
+                        {% for ph in gallery %}
+                        <a href="/static/{{ ph.file }}" data-pswp-width="{{ ph.width }}" data-pswp-height="{{ ph.height }}">
+                            <img class='img-fluid' src="/static/{{ ph.thumbnail }}" alt="picture"/>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+        <!--
+    <div class="rsvp-details">
+        <div class="container text-center align-center" style="margin: 1rem; border: solid; border-color: #263714; border-width: 4px; background-color:rgb(233, 207, 175); border-radius: 16px; padding: 2rem;">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <h1 class="press" style='font-size: 10rem; text-align: justify;'>JESS & TIM</h1>
+                </div>
+                <div class="col-lg-12" style="margin-top: -1.5rem">
+                    <h4 class="hand rsvp-dark-txt" style='font-size: 3.5rem; text-align:justify;'><b>are get married on November 1<sup>st</sup>, 2025</b></h4>
+                </div>
+                <div class="col-lg-12">
+                    <h4 class="hand" style='font-size: 3.5rem;'>save the date</h4>
+                </div>
+                
+                <div class="col-lg-12">
+                    <div class="row justify-content-center">
+                        <div class="col-6" style='width: 3rem;'>
+                        <span class="h4 press text-end" style='font-size: 3rem;'>NOV. <br> 1<sup>st</sup></span>
+                        </div>
+                        <div class="col-6">
+                        <span class="h4 press rsvp-light-txt" style='font-size: 3rem; width:5rem;'>BROWN COUNTY <br>STATE PARK</span>       
+                        </div>                 
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <h4 class="press rsvp-text-dark" style='font-size: 3rem; text-align:justify;'>AT BROWN COUNTY STATE PARK, BROWN COUNTY INDIANA</h4>
+                </div>
+                <div class="row g-2">
+                    <div class="col-12">
+                        <a class="btn btn-outline-dark press"
+                        href="{% url 'savedate:notion' "rsvp" %}"
+                        style="width: 100%;">
+                            <p class="h1" style:'vertical-align:middle;'>RSVP</p>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-outline-dark press"
+                        href="{% url 'savedate:notion' "details" %}"
+                         style="width: 100%;">
+                            <p class="h1" style:'vertical-align:middle;'>DETAILS</p>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-outline-dark press"
+                        href="{% url 'savedate:notion' "travel" %}"
+                         style="width: 100%;">
+                            <p class="h1" style:'vertical-align:middle;'>TRAVEL</p>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-outline-dark press"
+                        href="{% url 'savedate:notion' "gallery" %}"
+                         style="width: 100%;">
+                            <p class="h1" style:'vertical-align:middle;'>GALLERY</p>
+                        </a>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-outline-dark press"
+                        href="{% url 'savedate:notion' 'faq' %}"
+                         style="width: 100%;">
+                            <p class="h1" style:'vertical-align:middle;'>FAQ</p>
+                        </a>
+                    </div>
+                </div>    
+            </div>
+        </div>    
+    </div>
+    <div class='divider-horizontal'></div>
+-->
+
+
+<script type="module">
+    import PhotoSwipeLightbox from "{% static 'node_modules/photoswipe/dist/photoswipe-lightbox.esm.js' %}"
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '#photo-gallery',
+        children: 'a',
+        showHideAnimationType: 'zoom',
+        pswpModule: () => import("{% static 'node_modules/photoswipe/dist/photoswipe.esm.js' %}")
+    });
+    lightbox.init()
+    const scrollButton = document.getElementById('scroll-down-btn');
+    const gallery = document.getElementById('photo-gallery');
+    if (scrollButton && lightbox) {
+        scrollButton.addEventListener('click', function() {
+            gallery.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+</script>
+{% endblock %}
+
+

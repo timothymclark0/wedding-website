@@ -1,15 +1,26 @@
 {% extends 'savedate/base.html' %}
 
-{% block title %}RSVP{% endblock %}
+{% block title %}{{ page }}{% endblock %}
 
 {% block extra_css %}
 <style>
     .navbar {
         background-color: #61672f !important;
     }
+
     .body {
         margin-top: -64px;
     }
+    {% if page == 'rsvp' %}
+    #body-orange {
+        background-color: #af3e15 !important;
+    }
+    .container {
+        background-color: #af3e15 !important;
+    }
+        {% else %}
+    }
+        {% endif %}
 </style>
 {% endblock %}
 {% block content %}
@@ -28,7 +39,7 @@
                     <a class="nav-link ibm-plex-mono-regular rsvp-light-txt {% if page == 'details'%}active" aria-current=page{% endif %}" href="{% url 'savedate:notion' 'details' %}">DETAILS</a>
                 </li>
                 <li>
-                    <a class="nav-link ibm-plex-mono-regular rsvp-light-txt {% if page == 'travel'%}active" aria-current=page{% endif %}"" href="{% url 'savedate:notion' 'travel' %}">TRAVEL</a>
+                    <a class="nav-link ibm-plex-mono-regular rsvp-light-txt {% if page == 'travel'%}active" aria-current=page{% endif %}" href="{% url 'savedate:notion' 'travel' %}">TRAVEL</a>
                 </li>
                 <li>
                     <a class="nav-link ibm-plex-mono-regular rsvp-light-txt" href="{% url 'savedate:registry' %}">REGISTRY</a>

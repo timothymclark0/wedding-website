@@ -53,10 +53,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'wedding.urls'
 
-CSRF_TRUSTED_ORIGINS = [
-    'jessandtim.us'
-]
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

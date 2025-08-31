@@ -1,0 +1,134 @@
+{% extends 'registry/base.html' %}
+{% load static %}
+{% block title %}REGISTRY{% endblock %}
+
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #61672f;
+    }
+    .background-img {
+        background-image:url("{% static 'bg-green.png' %}");; 
+        height: 100vh;
+        width:100vw;
+        position: relative;
+        background-size:cover;
+        z-index:1;
+    }
+    .navbar {
+        background-color: #61672f !important;
+    }
+    .desc {
+        background-color:rgb(175, 62, 21);
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        radius: 8px;
+        box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .gift-card {
+        background-color:#e75e2c;
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        radius: 8px;
+
+        box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gift-card:hover {
+        transform: scale(1.005);
+        box-shadow: 0 7px 21px rgba(0,0,0,0.5);
+    }
+</style>
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="z-index:99999999999999999999999999999">
+    <div class="container-fluid align-items-center">
+        <a class="navbar-brand ibm-plex-mono-regular  rsvp-light-txt" href="{% url 'savedate:savethedate' %}">JESS&TIM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular  rsvp-light-txt" href="{% url 'savedate:notion' 'rsvp' %}">RSVP</a>
+                </li>
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular  rsvp-light-txt" href="{% url 'savedate:notion' 'details' %}">DETAILS</a>
+                </li>
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular  rsvp-light-txt" href="{% url 'savedate:notion' 'travel' %}">TRAVEL</a>
+                </li>
+                <li>
+                    <a class="nav-link active ibm-plex-mono-regular  rsvp-light-txt" aria-current="page" href="{% url 'registry:registry' %}">REGISTRY</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<div class="background-img">
+    <div class="container">
+        <div class="row desc">
+            <div class="col-lg-12">
+                <h1 class="ibm-plex-mono-bold text-center rsvp-light-txt">Registry</h1>
+            </div>
+            <div class="col-lg-12 px-5">
+                <p class="text-start rsvp-light-txt">Thank you so much for considering getting us a wedding gift! If you have the means, we really appreciate it, if not, we appreciate you just as much. Here is a selection of reccomended gifts, including some causes that are important to us. When you decide on an item, you can click it and fill out a short form to let us know.</p>
+            </div>
+        </div>
+        <div class="row my-2 g-3">
+            <div class="col-md-12 text-end">
+                    <span class="badge text-bg-secondary ibm-plex-mono-bold">sort:</span>
+                    <div class="btn-group" role="group" aria-label="sorting options">
+                        <a href="{% url 'registry:registry' %}?sort=price_low" class="btn btn-secondary ibm-plex-mono-bold">price: low</a>
+                        <a href="{% url 'registry:registry'%}?sort=price_high" class="btn btn-secondary ibm-plex-mono-bold">price: high</a>
+                        <a href="{% url 'registry:registry' %}?sort=name" class="btn btn-secondary ibm-plex-mono-bold">name</a>
+                    </div>
+            </div>
+            {% for row in giftinfo %}
+            {% with g=row.0 %}
+            <div class="col-md-4">
+                <div class="card gift-card" style="background-color: rgb(175, 62, 21);">
+                    <a href="{% url 'registry:gift_page' g.slug %}" style="width:100%; height: 100%; position:absolute; z-index:5; left:0; top:0;"></a>
+                    <img src="{{ g.thumbnail }}" class="card-img-top">
+                    <div class="card-body">
+                        <h4 class="ibm-plex-mono-bold rsvp-light-txt">{{g.name|capfirst}}</h4>
+                        <p style="max-width: 100%" class="card-text ibm-plex-mono-regular d-inline-block text-truncate rsvp-light-txt">{{ g.description }}</p>
+                        <div class="row g-0">
+                            {% if g.price_range_low %}
+                            <div class="col-6">
+                                <p class="card-text ibm-plex-mono-regular rsvp-light-txt"><small>donate:</small> ${{ g.price_range_low|floatformat:"2g" }}-${{ g.price_range_high|floatformat:"2g" }}</p>
+                            </div>
+                            <div class="col-4">
+                                <p class="card-text ibm-plex-mono-regular rsvp-light-txt"><small>raised:</small> ${{ row.2|floatformat:"2g" }}
+                            </div>
+                            <div class="col-2">
+                                <p class="card-text ibm-plex-mono-regular text-end rsvp-light-txt"><mark>{{ row.1 }}</mark>/{{g.number_requested}}   </p>
+                            </div>
+                            {% else %}
+                            <div class="col-6">
+                                <p class="card-text ibm-plex-mono-regular rsvp-light-txt"><small>price:</small> ${{g.price|floatformat:"2g"}}</p>
+                            </div>
+                            <div class="col-6">
+                                <p class="card-text ibm-plex-mono-regular text-end rsvp-light-txt"><mark>{{row.1}}</mark>/{{g.number_requested}}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

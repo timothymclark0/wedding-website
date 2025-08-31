@@ -1,0 +1,230 @@
+{% extends 'registry/base.html' %}
+{% load static %}
+{% load anonymize %}
+{% load tz %}
+{% block title %}REGISTRY | {{gift.name|upper}}{% endblock %}
+
+
+{% block extra_css %}
+<style>
+    body {
+        background-color: #61672f;
+    }
+    .background-img {
+        background-image:url("{% static 'bg-green.png' %}");
+        height: 100vh;
+        width:100vw;
+        position: absolute;
+        background-size:cover;
+        z-index:1;
+    }
+    .navbar {
+        background-color: #61672f !important;
+    }
+    .form-control {
+        background-color: rgb(233, 207, 175);
+        border-color: #000000
+    }
+    .form-check-input {
+        background-color: rgb(233, 207, 175);
+        border-color: rgb(233, 207, 175);
+    }
+    .form-check-input:checked {
+        background-color: #61672f;
+        border-color: #606060;
+
+    }
+    .hr {
+        color: rgb(233, 207, 175) !important;
+        opacity: 1;
+    }
+    .desc {
+        background-color:rgb(175, 62, 21);
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        radius: 8px;
+        box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .gift-card {
+        background-color:rgb(175, 62, 21);
+        border: solid;
+        border-width: 0.75rem;
+        border-color: rgb(233, 207, 175);
+        border-radius: 8px;
+        radius: 8px;
+
+        box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+{% block content %}
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="z-index:99999999999999999999999999999">
+    <div class="container-fluid align-items-center">
+        <a class="navbar-brand ibm-plex-mono-regular rsvp-light-txt" href="{% url 'savedate:savethedate' %}">JESS&TIM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular rsvp-light-txt" href="{% url 'savedate:notion' 'rsvp' %}">RSVP</a>
+                </li>
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular rsvp-light-txt" href="{% url 'savedate:notion' 'details' %}">DETAILS</a>
+                </li>
+                <li>
+                    <a class="nav-link ibm-plex-mono-regular rsvp-light-txt" href="{% url 'savedate:notion' 'travel' %}">TRAVEL</a>
+                </li>
+                <li>
+                    <a class="nav-link active ibm-plex-mono-regular rsvp-light-txt" aria-current="page" href="{% url 'registry:registry' %}">REGISTRY</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<div class="background-img" >
+    <div class="container">
+        <div class="row g-4 m-4 gift-card">
+            <div class="col-md-12">
+                <h1 class="ibm-plex-mono-bold rsvp-light-txt text-center">{{ gift.name }}</h1>
+            </div>
+            <div class="col-md-12 text-center">
+                <img src="{{ gift.thumbnail_base }}" class="img-fluid">
+            </div>
+            <div class="col-md-6 text-center">
+                {% if gift.price_range_low %}
+                <a class="btn btn-dark" href={{ gift.url }}><h2 class="ibm-plex-mono-bold rsvp-light-txt">Link to Donate</h2></a>
+                {% else %}
+                <a class="btn btn-dark" href={{ gift.url }}><h2 class="ibm-plex-mono-bold rsvp-light-txt">Link to Gift</h2></a>
+                {% endif %}
+            </div>
+            <div class="col-md-6 text-end">
+                {% if gift.price_range_low %}
+                <h2 class="ibm-plex-mono-bold rsvp-light-txt"><small>donation:</small> <b>${{ gift.price_range_low }} - {{ gift.price_range_high }}</b></h2><br>
+                <h5 class="ibm-plex-mono-bold rsvp-light-txt">suggested: ${{gift.price}}<h5>
+                {% else %}
+                <h2 class="ibm-plex-mono-bold rsvp-light-txt"><small>price:</small> <b>${{ gift.price }}</b></h2>
+                {% endif %}
+            </div> 
+            <div class="col-md-12">
+                <hr class="hr">
+                <p class="ibm-plex-mono-regular rsvp-light-txt">{{ gift.description }}</p>
+            </div>
+            <div class="col-md-12">
+                <h1 class="ibm-plex-mono-bold rsvp-light-txt text-center">Gift Claims</h1>
+                <table class="table text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="ibm-plex-mono-regular rsvp-light-txt">Person</th>
+                            <th scope="col" class="ibm-plex-mono-regular rsvp-light-txt">Amount</th>
+                            <th scope="col" class="ibm-plex-mono-regular rsvp-light-txt">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in claims %}
+                        <tr>
+                            <th scope="row" class="ibm-plex-mono-regular rsvp-light-txt">{{ p.name|hide_name }}</th>
+                            <td class="ibm-plex-mono-regular rsvp-light-txt">${{ p.amount}}</td>
+                            <td class="ibm-plex-mono-regular rsvp-light-txt">{{ p.time|localtime }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <th scope="row"></th>
+                        {% if gift.price_range_low %}
+                        <td scope="row" class="ibm-plex-mono-bold rsvp-light-txt">Raised ${{ total }}</td>
+                        {% else %}
+                        <td scope="row" class="ibm-plex-mono-bold rsvp-light-txt">Covered ${{ total }} / ${{ gift.price }}</td>
+                        {% endif %}
+                        <td></td>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="col-md-12 text-center my-3">
+                {% if gift.price_range_low %}
+                <button id="claim-button" class="btn btn-dark ibm-plex-mono-bold rsvp-light-txt" onclick="showHideForm()">Record Donation</button>
+                {% else %}
+                <button id="claim-button" class="btn btn-dark ibm-plex-mono-bold rsvp-light-txt" onclick="showHideForm()">Claim this gift</button>
+                {% endif %}
+            </div>
+            <div class="col-md-12" style="position:absolute; top: -999px;" id="form-grid">
+                <form action="{% url 'registry:claim_gift' gift.slug %}" method="post">
+                    {% csrf_token %}
+                    <div class="row g-2 p-2">
+                        {% if not gift.price_range_low and not gift.price_range_high%}
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input class="form-check-input" onclick="showHideAmount('full')" type="radio" name="full-partial" value="full" id="gift-full" checked>
+                                <label class="form-check-label ibm-plex-mono-regular rsvp-light-txt" for="gift-full">
+                                    Buy this gift 
+                                </label>
+                            </div>
+                        </div>
+                            <div class="col-md-2">    
+                                <div class='form-check'>
+                                    <input class="form-check-input" onclick="showHideAmount('partial')" type="radio" name="full-partial" value="partial" id="gift-full">
+                                    <label class="form-check-label ibm-plex-mono-regular rsvp-light-txt" for="gift-full">
+                                        Partially Contribute to buying this gift
+                                    </label>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="col">
+                            <label for="gift-name" class="form-label ibm-plex-mono-bold rsvp-light-txt">Name</label>
+                            <input class="form-control" name="name" type="text" placeholder='Name' aria-label="Input Name" id="gift-name">
+                        </div>
+                        <div class="col-md-4" id="amount-col" 
+                        {% if gift.price_range_low and gift.price_range_high %}
+                        style="position:relative; top: 0px;"    
+                        {% else %}
+                        style="position: absolute; top: -999px;"                        
+                        {% endif %}>
+                            <label for="gift-amount" class="form-label ibm-plex-mono-bold rsvp-light-txt">Amount</label>
+                            <input class="form-control" name="amount" type="number" min="0.00" max="10000.00" step="0.01" id='gift-amount'>
+                        </div>
+                        <div class="col-md-12 text-center" style="margin-bottom:1.5rem;">
+                            <button type="submit" class="btn btn-dark ibm-plex-mono-bold rsvp-light-txt">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showHideForm() {
+        const formElem = document.getElementById("form-grid")
+        const button = document.getElementById("claim-button")
+        if (formElem.style.position === "relative") {
+            formElem.style.position = 'absolute';
+            formElem.style.top = "-999px";
+            button.textContent = 'Claim this gift'            
+        } else {
+            formElem.style.position = 'relative';
+            formElem.style.top = '0px';
+            button.textContent = 'Hide'
+        }
+    }
+
+    function showHideAmount(a) {
+        const amount = document.getElementById("amount-col");
+        if (a === 'partial') {
+            amount.style.position = 'relative';
+            amount.style.top = '0px';
+        } else {
+            amount.style.position = 'absolute';
+            amount.style.top = "-999px";
+        }
+    }
+</script>
+{% endblock %}
